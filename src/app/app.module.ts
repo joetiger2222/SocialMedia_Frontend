@@ -12,8 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { RegisterationComponent } from './registeration/registeration.component';
 const appRoutes:Routes=[
-  {path:'',component: HomePageComponent},
-  {path:'login',component: LoginComponent},
+  {path:'',component: LoginComponent},
+  {path:'login',component: HomePageComponent},
   {path:'profile/:id',component: ProfilePageComponent},
   {path:'register',component: RegisterationComponent}
 ]

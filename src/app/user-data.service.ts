@@ -9,14 +9,14 @@ export class UserDataService {
  
 
   public get userId(): string | null {
-    return localStorage.getItem(this.userIdKey);
+    return sessionStorage.getItem(this.userIdKey);
   }
 
   public set userId(value: string | null) {
     if (value) {
-      localStorage.setItem(this.userIdKey, value);
+      sessionStorage.setItem(this.userIdKey, value);
     } else {
-      localStorage.removeItem(this.userIdKey);
+      sessionStorage.removeItem(this.userIdKey);
     }
   }
 
