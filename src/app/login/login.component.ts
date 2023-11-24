@@ -29,9 +29,10 @@ export class LoginComponent {
     }
     this.httpClient.post<{userId:string}>(`https://socialmedia1-001-site1.anytempurl.com/api/Authentication/Login/User`,loginData.value).subscribe({
       next:res=>{
+        
         this.userData.userId=res.userId;
         
-        this.router.navigate(['/']);
+        this.router.navigate(['/homePage']);
       },
       error:err=>{
         console.log(err);
