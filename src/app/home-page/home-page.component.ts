@@ -25,7 +25,7 @@ export class HomePageComponent {
 
 
   getUserFeed(){
-    this.httpClient.get<SinglePost[]>(`https://localhost:7093/api/Post/UserFeed/${this.userData.userId}`).subscribe({
+    this.httpClient.get<SinglePost[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Post/UserFeed/${this.userData.userId}`).subscribe({
       next:res=>{
         this.posts=res;
       },
@@ -36,7 +36,7 @@ export class HomePageComponent {
   }
 
   likeOrRemoveLike(postId:string){
-    this.httpClient.put(`https://localhost:7093/api/Post/AddOrRemoveLike`,{userId:this.userData.userId,postId:postId}).subscribe({
+    this.httpClient.put(`https://socialmedia1-001-site1.anytempurl.com/api/Post/AddOrRemoveLike`,{userId:this.userData.userId,postId:postId}).subscribe({
       next:res=>{
         this.getUserFeed();
       },
@@ -67,7 +67,7 @@ export class HomePageComponent {
     formData.append('UserId',this.userData.userId?this.userData.userId.toString():'')
     formData.append('FileName',this.createPostPhoto?this.createPostPhoto.name.toString():'')
     formData.append('File',this.createPostPhoto?this.createPostPhoto:'')
-    this.httpClient.post(`https://localhost:7093/api/Post`,formData).subscribe({
+    this.httpClient.post(`https://socialmedia1-001-site1.anytempurl.com/api/Post`,formData).subscribe({
       next:res=>{
         this.getUserFeed();
         this.showCreatePost=false
@@ -83,7 +83,7 @@ export class HomePageComponent {
     this.showAddComment=true
     this.choosenPost=post;
     
-    this.httpClient.get<SingleComment[]>(`https://localhost:7093/api/Comment/${post.id}`).subscribe({
+    this.httpClient.get<SingleComment[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Comment/${post.id}`).subscribe({
       next:res=>{
         console.log(res);
         this.choosenPostComments=res;
@@ -105,7 +105,7 @@ export class HomePageComponent {
     formData.append('FileName',this.createPostPhoto?this.createPostPhoto.name:'')
     formData.append('File',this.createPostPhoto?this.createPostPhoto:'')
     formData.append('PostId',this.choosenPostToComment?this.choosenPostToComment.id:'')
-    this.httpClient.post<SingleComment>(`https://localhost:7093/api/Comment/${this.choosenPostToComment.id}`,formData).subscribe({
+    this.httpClient.post<SingleComment>(`https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`,formData).subscribe({
       next:res=>{
         console.log(res);
         
@@ -115,7 +115,7 @@ export class HomePageComponent {
         console.log(err);
       }
     })
-    // this.httpClient.get<SingleComment[]>(`https://localhost:7093/api/Comment/${this.choosenPostToComment.id}`).subscribe({
+    // this.httpClient.get<SingleComment[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`).subscribe({
     //   next:res=>{
     //     console.log(res);
     //     this.choosenPostComments=res;

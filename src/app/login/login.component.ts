@@ -27,7 +27,7 @@ export class LoginComponent {
       alert('Please enter a valid password')
       return;
     }
-    this.httpClient.post<{userId:string}>(`https://localhost:7093/api/Authentication/Login/User`,loginData.value).subscribe({
+    this.httpClient.post<{userId:string}>(`https://socialmedia1-001-site1.anytempurl.com/api/Authentication/Login/User`,loginData.value).subscribe({
       next:res=>{
         this.userData.userId=res.userId;
         

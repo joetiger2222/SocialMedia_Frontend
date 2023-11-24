@@ -49,7 +49,7 @@ export class RegisterationComponent {
     }
     this.httpClient
       .post<{ userId: string }>(
-        `https://localhost:7093/api/Authentication/Register`,
+        `https://socialmedia1-001-site1.anytempurl.com/api/Authentication/Register`,
         {
           username: loginData.value.username,
           email: loginData.value.email,

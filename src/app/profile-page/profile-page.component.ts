@@ -50,7 +50,7 @@ export class ProfilePageComponent {
 
   getUserPosts() {
     this.httpClient
-      .get<SinglePost[]>(`https://localhost:7093/api/Post/${this.userData.userId}/${this.userId}`)
+      .get<SinglePost[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Post/${this.userData.userId}/${this.userId}`)
       .subscribe({
         next: (res) => {
         
@@ -65,7 +65,7 @@ export class ProfilePageComponent {
   checkFriends() {
     this.httpClient
       .get<{ isFriends: boolean }>(
-        `https://localhost:7093/IsFriends/${this.userData.userId}/${this.userId}`
+        `https://socialmedia1-001-site1.anytempurl.com/IsFriends/${this.userData.userId}/${this.userId}`
       )
       .subscribe({
         next: (res) => {
@@ -86,7 +86,7 @@ export class ProfilePageComponent {
   checkFriendReques() {
     this.httpClient
       .get<{ isFriendReques: string }>(
-        `https://localhost:7093/IsFriendReques/${this.userData.userId}/${this.userId}`
+        `https://socialmedia1-001-site1.anytempurl.com/IsFriendReques/${this.userData.userId}/${this.userId}`
       )
       .subscribe({
         next: (res) => {
@@ -101,7 +101,7 @@ export class ProfilePageComponent {
 
   likeOrRemoveLike(postId: string) {
     this.httpClient
-      .put(`https://localhost:7093/api/Post/AddOrRemoveLike`, {
+      .put(`https://socialmedia1-001-site1.anytempurl.com/api/Post/AddOrRemoveLike`, {
         userId: this.userData.userId,
         postId: postId,
       })
@@ -126,7 +126,7 @@ export class ProfilePageComponent {
     this.choosenPost = post;
     this.choosenPostComments = [];
     this.httpClient
-      .get<SingleComment[]>(`https://localhost:7093/api/Comment/${post.id}`)
+      .get<SingleComment[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Comment/${post.id}`)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -157,7 +157,7 @@ export class ProfilePageComponent {
     );
     this.httpClient
       .post<SingleComment>(
-        `https://localhost:7093/api/Comment/${this.choosenPostToComment.id}`,
+        `https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`,
         formData
       )
       .subscribe({
@@ -171,7 +171,7 @@ export class ProfilePageComponent {
       });
     this.httpClient
       .get<SingleComment[]>(
-        `https://localhost:7093/api/Comment/${this.choosenPostToComment.id}`
+        `https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`
       )
       .subscribe({
         next: (res) => {
@@ -189,7 +189,7 @@ export class ProfilePageComponent {
 
   sendFriendRequest() {
     this.httpClient
-      .post(`https://localhost:7093/api/FriendRequest`, {
+      .post(`https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest`, {
         recieverId: this.userId,
         senderId: this._userData.userId,
       })
@@ -206,7 +206,7 @@ export class ProfilePageComponent {
   cancelFriendRequest() {
     this.httpClient
       .delete(
-        `https://localhost:7093/api/FriendRequest/RejectOrCancelFriendRequest/${this.userData.userId}/${this.userId}`
+        `https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest/RejectOrCancelFriendRequest/${this.userData.userId}/${this.userId}`
       )
       .subscribe({
         next: (res) => {
@@ -221,7 +221,7 @@ export class ProfilePageComponent {
   acceptFriendRequest() {
     this.httpClient
       .post(
-        `https://localhost:7093/api/FriendRequest/AcceptFriendRequest/${this.userData.userId}/${this.userId}`,
+        `https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest/AcceptFriendRequest/${this.userData.userId}/${this.userId}`,
         {}
       )
       .subscribe({
@@ -238,7 +238,7 @@ export class ProfilePageComponent {
     this.showChatModel = true;
     this.httpClient
       .get<SingleChatMessage[]>(
-        `https://localhost:7093/api/Chat/${this.userData.userId}/${this.userId}`
+        `https://socialmedia1-001-site1.anytempurl.com/api/Chat/${this.userData.userId}/${this.userId}`
       )
       .subscribe({
         next: (res) => {
@@ -250,7 +250,7 @@ export class ProfilePageComponent {
       });
 
       this.hubConnection= new HubConnectionBuilder()
-      .withUrl("https://localhost:7093/hubs/chat")
+      .withUrl("https://socialmedia1-001-site1.anytempurl.com/hubs/chat")
       .withAutomaticReconnect()
       .build();
   
@@ -282,7 +282,7 @@ export class ProfilePageComponent {
   sendMessage(message: string) {
     
     this.httpClient
-      .post(`https://localhost:7093/api/Chat`, {
+      .post(`https://socialmedia1-001-site1.anytempurl.com/api/Chat`, {
         date: new Date().toISOString(),
         content: message,
         senderId: this.userData.userId,
