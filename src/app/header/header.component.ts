@@ -11,7 +11,7 @@ export class HeaderComponent {
   constructor(private router:Router,private userData:UserDataService){}
   goToLogin(){
     this.userData.userId=null;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
    
   }
   checkLogin(){
