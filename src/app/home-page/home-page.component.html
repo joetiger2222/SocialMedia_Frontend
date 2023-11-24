@@ -1,0 +1,72 @@
+<div class="homePageContainer">
+  <app-header
+    style="display: flex; align-items: center; width: 90%; margin-bottom: 50px"
+  ></app-header>
+  <div class="homePageContent">
+    <div class="writePostContainer">
+      <input placeholder="Wite Post..."  (click)="openCreatePostModal()"/>
+    </div>
+
+    <div class="singlePostContainer" *ngFor="let p of posts">
+      <h2 style="cursor: pointer;" (click)="navigateToProflePage(p.userId)">{{p.fullName}}</h2>
+      <p>{{ p.text }}</p>
+      <img *ngIf="p.filePath" [src]="p.filePath" />
+      <div class="postFunctionsContainer">
+        <p
+        (click)="likeOrRemoveLike(p.id)"
+          [ngStyle]="{
+            'background-color': p.isLiked ? '#1717b8d1' : '',
+            color: p.isLiked ? 'white' : ''
+          }"
+        >
+          {{ p.likes }} Likes
+        </p>
+        <p (click)="openCommentModel(p)">Comment</p>
+        <!-- <p>Repost</p> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="succededModal" *ngIf="showCreatePost">
+  <form class="writePostDiv" (ngSubmit)="createPost(f)" #f="ngForm">
+    <h1>Write Yor Thoughts</h1>
+    <textarea name="text" ngModel></textarea>
+    <input type="file" (change)="setPhoto($event)">
+    <div class="saveAndCancelButtonsDiv">
+      <button (click)="closeCreatePostModal()" type="button">Cancel</button>
+      <button  type="submit">Save</button>
+    </div>
+  </form>
+
+</div>
+
+
+
+
+
+    <div class="modal-overlay" id="succededModal" *ngIf="showAddComment">
+      <div class="postForCommentOuter">
+        <button (click)="closeCommentModal()" class="closeCommentModalButton">Close</button>
+        <div class="postForCommentContainer">
+          
+          <h2>{{choosenPost.fullName}}</h2>
+          <p>{{ choosenPost.text }}</p>
+          <img *ngIf="choosenPost.filePath" [src]="choosenPost.filePath" />
+          <form class="commentInputContainer" (ngSubmit)="createComment(f)" #f="ngForm">
+            <input class="addCommentInput" ngModel name="text" >
+            <button type="submit" >Add</button>
+            <input type="file" class="addCommentImg" (change)="setPhoto($event)">
+            
+          </form>
+          <div class="singleCommentDiv" *ngFor="let comment of choosenPostComments">
+            <h2>{{comment.fullName}}</h2>
+            <p>{{comment.text}}</p>
+            <img *ngIf="comment.filePath" [src]="comment.filePath" />
+          </div>
+        </div>
+      </div>
+      
+        
+        </div>

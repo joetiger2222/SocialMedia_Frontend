@@ -1,0 +1,11 @@
+<div class="headerContainer">
+    <h1 class="headerScodialMedia" style="cursor: pointer;" (click)="goToHomePage()">Social Media</h1>
+    <!-- <input type="search" placeholder="Search By Name"> -->
+    
+    <div style="display: flex;column-gap: 20px;align-items: center;">
+        <h3 class="profileText" style="cursor: pointer;" *ngIf="checkLogin()" (click)="goToProfilePage()">Profile</h3>
+        <button class="logoutButton" (click)="goToLogin()" *ngIf="checkLogin()">Logout</button>
+        
+    </div>
+    
+</div>

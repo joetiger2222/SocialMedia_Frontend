@@ -1,0 +1,33 @@
+<div class="loginContainer">
+    <form class="innerLoginDiv" (ngSubmit)="login(f)" #f="ngForm">
+        <h1>Register</h1>
+        <div class="inputDiv">
+            <label>First Name:</label>
+            <input required type="text" ngModel name="firstName">
+        </div>
+        <div class="inputDiv">
+            <label>Last Name:</label>
+            <input required type="text" ngModel name="lastName">
+        </div>
+        <div class="inputDiv">
+            <label>Username:</label>
+            <input required type="text" ngModel name="username">
+        </div>
+        <div class="inputDiv">
+            <label>Email:</label>
+            <input required type="email" ngModel name="email" email>
+        </div>
+        <div class="inputDiv">
+            <label>Password:</label>
+            <input required type="password" ngModel name="password">
+        </div>
+        <div class="inputDiv">
+            <label>Confirm Password:</label>
+            <input required type="password" ngModel name="confirmPassword">
+        </div>
+        
+        <button type="submit" class="loginButton">Register</button>
+        <a href="/login" class="loginButton" style="display: flex;align-items: center;justify-content: center;">Login</a>
+    </form>
+</div>
+
