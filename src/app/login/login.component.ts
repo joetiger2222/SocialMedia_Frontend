@@ -9,13 +9,14 @@ import { UserDataService } from '../user-data.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  loading :boolean = false;
   constructor(private  router:Router,private httpClient:HttpClient,private userData:UserDataService){}
 
   ngOnInit(){
     console.log(this.userData.userId)
-    if(this.userData.userId!=null){
-      this.router.navigate(['/'])
-    }
+    // if(this.userData.userId!=null){
+    //   this.router.navigate(['/'])
+    // }
   }
 
   login(loginData:NgForm){
@@ -27,16 +28,16 @@ export class LoginComponent {
       alert('Please enter a valid password')
       return;
     }
+    this.loading=true
     this.httpClient.post<{userId:string}>(`https://socialmedia1-001-site1.anytempurl.com/api/Authentication/Login/User`,loginData.value).subscribe({
       next:res=>{
-        
         this.userData.userId=res.userId;
-        
         this.router.navigate(['/homePage']);
+        this.loading=false
       },
       error:err=>{
         console.log(err);
-        
+        this.loading=false
       }
     })
     

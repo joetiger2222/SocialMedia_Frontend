@@ -26,6 +26,6 @@ export class HeaderComponent {
   }
 
   goToHomePage(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/homePage']);
   }
 }
