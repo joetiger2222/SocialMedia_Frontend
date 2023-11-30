@@ -1,0 +1,32 @@
+<div class="singlePostContainer">
+  <div class="postAuthorAndFunctions">
+    <h2 style="cursor: pointer;" (click)="navigateToProflePage(singlePost.userId)">{{singlePost.fullName}}</h2>
+
+    <div class="postFuntions" *ngIf="this.singlePost.userId===this._userData.getUserId">
+      <img src="../../../assets/edit.png" (click)="this.showEditPost=true" />
+      <img src="../../../assets/delete.png" (click)="this.showDeletePost=true" />
+    </div>
+    
+  </div>
+    
+    <p>{{ singlePost.text }}</p>
+    <img *ngIf="singlePost.filePath" [src]="singlePost.filePath" />
+    <div class="postFunctionsContainer">
+      <button
+      (click)="likeOrRemoveLike(singlePost.id)"
+        [ngStyle]="{
+          'background-color': singlePost.isLiked ? '#1717b8d1' : '',
+          color: singlePost.isLiked ? 'white' : ''
+        }"
+      >
+        {{ singlePost.likes }} Likes
+      </button>
+      <button (click)="this.showCommentsModal=true">Comment</button>
+      
+    </div>
+  </div>
+
+
+<app-comments *ngIf="showCommentsModal" [choosenPost]="singlePost" (closeCommentModal)="this.showCommentsModal=false"></app-comments>
+<app-delete-post *ngIf="showDeletePost" (closeDeleteButton)="this.showDeletePost=false" [postId]="this.singlePost.id" />
+<app-edit-post *ngIf="showEditPost" [post]="singlePost" (closeEditPost)="this.showEditPost=false" />

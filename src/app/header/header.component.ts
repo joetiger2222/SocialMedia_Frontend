@@ -10,19 +10,20 @@ import { UserDataService } from '../user-data.service';
 export class HeaderComponent {
   constructor(private router:Router,private userData:UserDataService){}
   goToLogin(){
-    this.userData.userId=null;
+    this.userData.setUserId='';
     this.router.navigate(['/']);
    
   }
   checkLogin(){
-    if(this.userData.userId!==null){
+    if(this.userData.getUserId!==null){
       return true;
     }
     return false;
   }
 
   goToProfilePage(){
-    this.router.navigate(['/profile/'+this.userData.userId])
+    this.router.navigate(['/profile/'+this.userData.getUserId])
+    
   }
 
   goToHomePage(){

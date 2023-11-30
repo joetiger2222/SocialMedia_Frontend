@@ -2,7 +2,7 @@
   <app-header
     style="display: flex; align-items: center; width: 90%; margin-bottom: 50px"
   />
-  <div class="profileButtons" *ngIf="userId !== _userData.userId">
+  <div class="profileButtons" *ngIf="userId !== _userData.getUserId">
     <button *ngIf="friendsCondition === 'No'" (click)="sendFriendRequest()">
       Add Friend
     </button>
@@ -18,72 +18,21 @@
     >
       Cancel
     </button>
-    <button (click)="openChatModel()">Chat</button>
-  </div>
-  <div class="singlePostContainer" *ngFor="let p of posts">
-    <h2 (click)="navigateToProflePage(p.userId)">{{ p.fullName }}</h2>
-    <p>{{ p.text }}</p>
-    <img *ngIf="p.filePath" [src]="p.filePath" />
-    <div class="postFunctionsContainer">
-      <p
-        (click)="likeOrRemoveLike(p.id)"
-        [ngStyle]="{
-          'background-color': p.isLiked ? '#1717b8d1' : '',
-          color: p.isLiked ? 'white' : ''
-        }"
-      >
-        {{ p.likes }} Likes
-      </p>
-      <p (click)="openCommentModel(p)">Comment</p>
-      <!-- <p>Repost</p> -->
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="succededModal" *ngIf="showAddComment">
-  <div class="postForCommentOuter">
-    <button (click)="closeCommentModal()" class="closeCommentModalButton">Close</button>
-    <div class="postForCommentContainer">
-      
-      <h2>{{choosenPost.fullName}}</h2>
-      <p>{{ choosenPost.text }}</p>
-      <img *ngIf="choosenPost.filePath" [src]="choosenPost.filePath" />
-      <form class="commentInputContainer" (ngSubmit)="createComment(f)" #f="ngForm">
-        <input class="addCommentInput" ngModel name="text">
-        <button type="submit">Add</button>
-        <input type="file" class="addCommentImg" (change)="setPhoto($event)">
-        
-      </form>
-      <div class="singleCommentDiv" *ngFor="let comment of choosenPostComments">
-        <h2>{{comment.fullName}}</h2>
-        <p>{{comment.text}}</p>
-        <img *ngIf="comment.filePath" [src]="comment.filePath" />
-      </div>
-    </div>
+    <button (click)="this.showChatModel=true">Chat</button>
   </div>
   
-    
-    </div>
+  <ng-container *ngFor="let p of posts"
+  ><app-single-posot
+    [singlePost]="p"
+    (updateUserFeed)="getUserPosts()"
+    style="max-width: 800px; width: 100%;"
+  ></app-single-posot
+></ng-container>
 
-<div class="modal-overlay" *ngIf="showChatModel">
-  <div class="chatContainer">
-    <button (click)="closeChatModel()">Close</button>
-    <div class="chatMessagesContainer" #chatContainer>
-      <p *ngFor="let message of chatMessages let last =last" class="chatMessage" [ngStyle]="{'align-self': message.senderId === _userData.userId ? 'start' : 'end'}">
-        {{ message.content }}
-        <ng-container *ngIf="last">{{scrollChatContainerToBottom()}}</ng-container>
-      </p>
-      
-    </div>
-    <div class="chatInputContainer">
-      <input #message />
-      <button
-        (click)="sendMessage(message.value);message.value=''"
-        style="background-color: #eee"
-       
-      >
-        Send
-      </button>
-    </div>
-  </div>
+
 </div>
+
+
+<app-chat [userId]="this.userId" *ngIf="showChatModel" (closeChat)="this.showChatModel=false" />
+
+

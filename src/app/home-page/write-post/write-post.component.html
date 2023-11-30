@@ -1,0 +1,12 @@
+<div class="modal-overlay" id="succededModal">
+    <form class="writePostDiv" (ngSubmit)="createPost(f)" #f="ngForm">
+      <h1>Write Yor Thoughts</h1>
+      <textarea name="text" ngModel></textarea>
+      <input type="file" (change)="setPhoto($event)">
+      <div class="saveAndCancelButtonsDiv">
+        <button  type="button" (click)="closeWritePost.emit()">Cancel</button>
+        <button  type="submit">Save</button>
+      </div>
+    </form>
+  
+  </div>

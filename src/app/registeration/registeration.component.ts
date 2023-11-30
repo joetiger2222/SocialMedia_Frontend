@@ -15,12 +15,7 @@ export class RegisterationComponent {
     private userData: UserDataService
   ) {}
 
-  ngOnInit() {
-    console.log(this.userData.userId);
-    if (this.userData.userId != null) {
-      this.router.navigate(['/']);
-    }
-  }
+
 
   login(loginData: NgForm) {
     if (loginData.form.controls['firstName']['invalid']) {

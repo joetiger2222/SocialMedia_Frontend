@@ -11,6 +11,13 @@ import { NgModel,NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { RegisterationComponent } from './registeration/registeration.component';
+import { WritePostComponent } from './home-page/write-post/write-post.component';
+import { SinglePosotComponent } from './home-page/single-posot/single-posot.component';
+import { CommentsComponent } from './home-page/comments/comments.component';
+import { ChatComponent } from './profile-page/chat/chat.component';
+import { DeletePostComponent } from './home-page/single-posot/delete-post/delete-post.component';
+import { EditPostComponent } from './home-page/single-posot/edit-post/edit-post.component';
+
 const appRoutes:Routes=[
   {path:'',component: LoginComponent},
   {path:'homePage',component: HomePageComponent},
@@ -25,7 +32,14 @@ const appRoutes:Routes=[
     HeaderComponent,
     LoginComponent,
     ProfilePageComponent,
-    RegisterationComponent
+    RegisterationComponent,
+    WritePostComponent,
+    SinglePosotComponent,
+    CommentsComponent,
+    ChatComponent,
+    DeletePostComponent,
+    EditPostComponent,
+    
   ],
   imports: [
     BrowserModule,

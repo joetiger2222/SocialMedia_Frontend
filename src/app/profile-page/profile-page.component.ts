@@ -4,7 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { async } from '@angular/core/testing';
+import { SinglePost } from '../models/SinglePost.model';
+import { SingleComment } from '../models/SingleComment.model';
+import { SingleChatMessage } from '../models/SingleChatMessage.model';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -13,12 +15,6 @@ import { async } from '@angular/core/testing';
 export class ProfilePageComponent {
   @ViewChild('chatContainer', { static: false }) chatContainer!: ElementRef;
   posts!: SinglePost[];
-  choosenPostComments!: SingleComment[];
-  choosenPostToComment!: SinglePost;
-  showCreatePost: boolean = false;
-  showAddComment: boolean = false;
-  choosenPost!: SinglePost;
-  createPostPhoto: File | null = null;
   userId!: string;
   friendsCondition!: string;
   readonly _userData!: UserDataService;
@@ -28,7 +24,6 @@ export class ProfilePageComponent {
   constructor(
     private userData: UserDataService,
     private httpClient: HttpClient,
-    private router: Router,
     private route: ActivatedRoute
   ) {
     this._userData = userData;
@@ -40,7 +35,7 @@ export class ProfilePageComponent {
       this.userId = params['id'];
     });
     this.getUserPosts();
-    if (this.userData.userId !== this.userId) {
+    if (this.userData.getUserId !== this.userId) {
       this.checkFriends();
     }
     
@@ -50,7 +45,7 @@ export class ProfilePageComponent {
 
   getUserPosts() {
     this.httpClient
-      .get<SinglePost[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Post/${this.userData.userId}/${this.userId}`)
+      .get<SinglePost[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Post/${this.userData.getUserId}/${this.userId}`)
       .subscribe({
         next: (res) => {
         
@@ -65,7 +60,7 @@ export class ProfilePageComponent {
   checkFriends() {
     this.httpClient
       .get<{ isFriends: boolean }>(
-        `https://socialmedia1-001-site1.anytempurl.com/IsFriends/${this.userData.userId}/${this.userId}`
+        `https://socialmedia1-001-site1.anytempurl.com/IsFriends/${this.userData.getUserId}/${this.userId}`
       )
       .subscribe({
         next: (res) => {
@@ -86,7 +81,7 @@ export class ProfilePageComponent {
   checkFriendReques() {
     this.httpClient
       .get<{ isFriendReques: string }>(
-        `https://socialmedia1-001-site1.anytempurl.com/IsFriendReques/${this.userData.userId}/${this.userId}`
+        `https://socialmedia1-001-site1.anytempurl.com/IsFriendReques/${this.userData.getUserId}/${this.userId}`
       )
       .subscribe({
         next: (res) => {
@@ -99,99 +94,13 @@ export class ProfilePageComponent {
       });
   }
 
-  likeOrRemoveLike(postId: string) {
-    this.httpClient
-      .put(`https://socialmedia1-001-site1.anytempurl.com/api/Post/AddOrRemoveLike`, {
-        userId: this.userData.userId,
-        postId: postId,
-      })
-      .subscribe({
-        next: (res) => {
-          this.getUserPosts();
-        },
-        error: (err) => {
-          alert('Failed to update user like');
-        },
-      });
-  }
-  setPhoto(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.files && inputElement.files[0]) {
-      this.createPostPhoto = inputElement.files[0];
-    }
-  }
-  openCommentModel(post: SinglePost) {
-    this.choosenPostToComment = post;
-    this.showAddComment = true;
-    this.choosenPost = post;
-    this.choosenPostComments = [];
-    this.httpClient
-      .get<SingleComment[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Comment/${post.id}`)
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          this.choosenPostComments = res;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
 
-  closeCommentModal() {
-    this.showAddComment = false;
-  }
-
-  createComment(commentText: NgForm) {
-    const formData: FormData = new FormData();
-    formData.append('Text', commentText.value['text']);
-    formData.append('UserId', this.userData.userId ? this.userData.userId : '');
-    formData.append(
-      'FileName',
-      this.createPostPhoto ? this.createPostPhoto.name : ''
-    );
-    formData.append('File', this.createPostPhoto ? this.createPostPhoto : '');
-    formData.append(
-      'PostId',
-      this.choosenPostToComment ? this.choosenPostToComment.id : ''
-    );
-    this.httpClient
-      .post<SingleComment>(
-        `https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`,
-        formData
-      )
-      .subscribe({
-        next: (res) => {
-         
-          this.choosenPostComments.push(res)
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-    this.httpClient
-      .get<SingleComment[]>(
-        `https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`
-      )
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          this.choosenPostComments = res;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
-  navigateToProflePage(userId: string) {
-    this.router.navigate(['/profile/' + userId]);
-  }
 
   sendFriendRequest() {
     this.httpClient
       .post(`https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest`, {
         recieverId: this.userId,
-        senderId: this._userData.userId,
+        senderId: this._userData.getUserId,
       })
       .subscribe({
         next: (res) => {
@@ -206,7 +115,7 @@ export class ProfilePageComponent {
   cancelFriendRequest() {
     this.httpClient
       .delete(
-        `https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest/RejectOrCancelFriendRequest/${this.userData.userId}/${this.userId}`
+        `https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest/RejectOrCancelFriendRequest/${this.userData.getUserId}/${this.userId}`
       )
       .subscribe({
         next: (res) => {
@@ -221,7 +130,7 @@ export class ProfilePageComponent {
   acceptFriendRequest() {
     this.httpClient
       .post(
-        `https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest/AcceptFriendRequest/${this.userData.userId}/${this.userId}`,
+        `https://socialmedia1-001-site1.anytempurl.com/api/FriendRequest/AcceptFriendRequest/${this.userData.getUserId}/${this.userId}`,
         {}
       )
       .subscribe({
@@ -234,94 +143,10 @@ export class ProfilePageComponent {
       });
   }
 
-  openChatModel() {
-    this.showChatModel = true;
-    this.httpClient
-      .get<SingleChatMessage[]>(
-        `https://socialmedia1-001-site1.anytempurl.com/api/Chat/${this.userData.userId}/${this.userId}`
-      )
-      .subscribe({
-        next: (res) => {
-          this.chatMessages = res;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-
-      this.hubConnection= new HubConnectionBuilder()
-      .withUrl("https://socialmedia1-001-site1.anytempurl.com/hubs/chat")
-      .withAutomaticReconnect()
-      .build();
-  
-      this.hubConnection.start()
-        .then(() => {
-          this.hubConnection.on('ReceiveMessage', (message) => {
-            this.chatMessages.push(message);
-          });
-        })
-        .catch(err => console.error('Error while establishing connection :(',err));
-
-       
 
 
-  }
-
-  public scrollChatContainerToBottom() {
-    if (this.chatContainer) {
-     
-      const containerElement: HTMLElement = this.chatContainer.nativeElement;
-      containerElement.scrollTop = containerElement.scrollHeight;
-    }
-  }
-
-  closeChatModel() {
-    this.showChatModel = false;
-  }
-
-  sendMessage(message: string) {
-    
-    this.httpClient
-      .post(`https://socialmedia1-001-site1.anytempurl.com/api/Chat`, {
-        date: new Date().toISOString(),
-        content: message,
-        senderId: this.userData.userId,
-        recieverId: this.userId,
-      })
-      .subscribe({
-        next: (res) => {
-          this.scrollChatContainerToBottom();
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
-}
-interface SinglePost {
-  id: string;
-  text: string;
-  likes: number;
-  userId: string;
-  filePath: string;
-  isLiked: boolean;
-  fullName: string;
 }
 
-interface SingleComment {
-  id: string;
-  userId: string;
-  fullName: string;
-  text: string;
-  likes: number;
-  postId: string;
-  filePath: string;
-}
 
-interface SingleChatMessage {
-  id: string;
-  content: string;
-  date: string;
-  senderId: string;
-  recieverId: string;
-}
+
+

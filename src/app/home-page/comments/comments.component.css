@@ -1,0 +1,95 @@
+.postForCommentOuter{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+    max-width: 600px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    row-gap: 20px;
+    max-height: 600px;
+    
+}
+
+.closeCommentModalButton{
+    align-self: center;
+    border: none;
+    outline: none;
+    width: 90%;
+    max-width: 120px;
+    height: 60px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.postForCommentContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 600px;
+    background-color: white;
+    /* padding: 10px; */
+    border-radius: 10px;
+    row-gap: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+     scrollbar-width: thin; 
+    scrollbar-color: transparent transparent; 
+    overflow: -moz-scrollbars-none; 
+    -ms-overflow-style: none; 
+}
+.postForCommentContainer::-webkit-scrollbar {
+    width: 0.5em; /* WebKit */
+}
+
+.postForCommentContainer::-webkit-scrollbar-thumb {
+    background-color: transparent; /* WebKit */
+}
+
+.postForCommentContainer>img{
+    width: 100%;
+    border-radius: 20px;
+}
+
+.commentInputContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    
+    
+}
+.addCommentInput{
+    width: 90%;
+    border: none;
+    outline: none;
+    border-radius: 10px 0 0 10px;
+    height: 30px;
+    background-color: #eee;
+    font-size: 18px;
+    padding-left: 10px;
+}
+
+.addCommentImg{
+width: 30%;
+max-width: 100px;
+}
+
+.commentInputContainer>button{
+    width: 10%;
+    height: 30px;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    border-radius: 0 10px 10px 0;
+}
+.singleCommentDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 10px;
+}
+.singleCommentDiv>img{
+    width: 100%;
+}

@@ -1,0 +1,9 @@
+<div class="modal-overlay">
+    <div class="editPostInner">
+        <textarea class="editPostText" #postText>{{post.text}}</textarea>
+        <div class="editPostFunctions">
+            <button (click)="closeEditPost.emit()">Cancel</button>
+            <button (click)="editPost(postText)">Save</button>
+        </div>
+    </div>
+</div>

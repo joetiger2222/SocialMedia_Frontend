@@ -1,0 +1,26 @@
+<div class="modal-overlay" id="succededModal">
+    <div class="postForCommentOuter">
+      <button class="closeCommentModalButton" (click)="this.closeCommentModal.emit()">
+        Close
+      </button>
+      <div class="postForCommentContainer">
+        <h2>{{ choosenPost.fullName }}</h2>
+        <p>{{ choosenPost.text }}</p>
+        <img *ngIf="choosenPost.filePath" [src]="choosenPost.filePath" />
+        <form
+          class="commentInputContainer"
+          (ngSubmit)="createComment(f)"
+          #f="ngForm"
+        >
+          <input class="addCommentInput" ngModel name="text" />
+          <button type="submit">Add</button>
+          <input type="file" class="addCommentImg" (change)="setPhoto($event)" />
+        </form>
+        <div class="singleCommentDiv" *ngFor="let comment of choosenPostComments">
+          <h2>{{ comment.fullName }}</h2>
+          <p>{{ comment.text }}</p>
+          <img *ngIf="comment.filePath" [src]="comment.filePath" />
+        </div>
+      </div>
+    </div>
+  </div>

@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { UserDataService } from '../user-data.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SinglePost } from '../models/SinglePost.model';
+import { SingleComment } from '../models/SingleComment.model';
 
 @Component({
   selector: 'app-home-page',
@@ -20,12 +22,12 @@ export class HomePageComponent {
   constructor(private httpClient:HttpClient,private userData:UserDataService,private router:Router){}
   ngOnInit(){
     this.getUserFeed()
-    console.log(this.userData.userId)
+   
   }
 
 
   getUserFeed(){
-    this.httpClient.get<SinglePost[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Post/UserFeed/${this.userData.userId}`).subscribe({
+    this.httpClient.get<SinglePost[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Post/UserFeed/${this.userData.getUserId}`).subscribe({
       next:res=>{
         this.posts=res;
       },
@@ -35,23 +37,10 @@ export class HomePageComponent {
     })
   }
 
-  likeOrRemoveLike(postId:string){
-    this.httpClient.put(`https://socialmedia1-001-site1.anytempurl.com/api/Post/AddOrRemoveLike`,{userId:this.userData.userId,postId:postId}).subscribe({
-      next:res=>{
-        this.getUserFeed();
-      },
-      error:err=>{
-        alert('Failed to update user like')
-      }
-    })
-  }
-  openCreatePostModal(){
-    this.showCreatePost=true;
-  }
 
-  closeCreatePostModal(){
-    this.showCreatePost=false;
-  }
+
+
+
 
   setPhoto(event:Event){
     const inputElement =event.target as HTMLInputElement;
@@ -64,7 +53,7 @@ export class HomePageComponent {
     console.log(postText.value['text']);
     const formData:FormData=new FormData();
     formData.append('Text',postText.value['text']);
-    formData.append('UserId',this.userData.userId?this.userData.userId.toString():'')
+    formData.append('UserId',this.userData.getUserId?this.userData.getUserId.toString():'')
     formData.append('FileName',this.createPostPhoto?this.createPostPhoto.name.toString():'')
     formData.append('File',this.createPostPhoto?this.createPostPhoto:'')
     this.httpClient.post(`https://socialmedia1-001-site1.anytempurl.com/api/Post`,formData).subscribe({
@@ -98,56 +87,9 @@ export class HomePageComponent {
     this.showAddComment=false
   }
 
-  createComment(commentText:NgForm){
-    const formData:FormData=new FormData();
-    formData.append('Text',commentText.value['text']);
-    formData.append('UserId',this.userData.userId?this.userData.userId:'')
-    formData.append('FileName',this.createPostPhoto?this.createPostPhoto.name:'')
-    formData.append('File',this.createPostPhoto?this.createPostPhoto:'')
-    formData.append('PostId',this.choosenPostToComment?this.choosenPostToComment.id:'')
-    this.httpClient.post<SingleComment>(`https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`,formData).subscribe({
-      next:res=>{
-        console.log(res);
-        
-        this.choosenPostComments.push(res)
-      },
-      error:err=>{
-        console.log(err);
-      }
-    })
-    // this.httpClient.get<SingleComment[]>(`https://socialmedia1-001-site1.anytempurl.com/api/Comment/${this.choosenPostToComment.id}`).subscribe({
-    //   next:res=>{
-    //     console.log(res);
-    //     this.choosenPostComments=res;
-    //   },
-    //   error:err=>{
-    //     console.log(err);
-    //   }
-    // })
-    
-  }
+  
 
-  navigateToProflePage(userId:string){
-    this.router.navigate(['/profile/'+userId])
-  }
+ 
 }
 
-interface SinglePost{
-  id:string;
-  text:string;
-  likes:number;
-  userId:string;
-  filePath:string;
-  isLiked:boolean;
-  fullName:string
-}
 
-interface SingleComment{
-  id:string,
-  userId:string,
-  fullName:string,
-  text:string,
-  likes:number,
-  postId:string,
-  filePath:string,
-}

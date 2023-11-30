@@ -1,0 +1,22 @@
+<div class="modal-overlay" >
+    <div class="chatContainer">
+      <button (click)="this.closeChat.emit()">Close</button>
+      <div class="chatMessagesContainer" #chatContainer>
+        <p *ngFor="let message of chatMessages let last =last" class="chatMessage" [ngStyle]="{'align-self': message.senderId === _userData.getUserId ? 'start' : 'end'}">
+          {{ message.content }}
+          <ng-container *ngIf="last">{{scrollChatContainerToBottom()}}</ng-container>
+        </p>
+        
+      </div>
+      <div class="chatInputContainer">
+        <input #message />
+        <button
+          (click)="sendMessage(message.value);message.value=''"
+          style="background-color: #eee"
+         
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
